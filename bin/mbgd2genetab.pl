@@ -8,6 +8,11 @@ $MBGDAPI = "https://mbgdapi.nibb.ac.jp";
 
 @species = @ARGV;
 
+if (! @species) {
+	print STDERR "Usage: $0 [ -outname='genomes' ] [ -keep_tmp ] sp1, sp2, ...\n";
+	exit(0);
+}
+
 $tmpdir = "tmp_mbgd_genetab" if (! $tmpdir);
 
 $outname = "genomes" if (! $outname);
@@ -16,20 +21,22 @@ make_path($tmpdir);
 
 $hash_protseq = &get_proteinseq(@species);
 &output_all(@species);
-foreach $sp (@species) {
-	foreach $suffix ("genetab", "faa") {
+
+foreach $suffix ("genetab", "faa") {
+	my($outfile) = "$outname.$suffix";
+	open(O, ">$outfile") || die "Can't open $outfile for output\n";
+	foreach $sp (@species) {
 		my($infile) = "$tmpdir/$sp.$suffix";
-		my($outfile) = "$outname.$suffix";
 		open(F, "$infile") || die "Can't open $infile\n";
-		open(O, ">$outfile") || die "Can't open $outfile for output\n";
 		while (<F>) {
 			print O $_;
 		}
-		close(F); close(O);
+		close(F);
 		if (! $keep_tmp) {
 			unlink "$tmpdir/$sp.$suffix";
 		}
 	}
+	close(O);
 }
 remove_tree($tmpdir) if (! $keep_tmp);
 
