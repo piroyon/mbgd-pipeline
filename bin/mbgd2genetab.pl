@@ -2,23 +2,36 @@
 
 use LWP::Simple;
 use JSON;
-use File::Path qw( make_path );
+use File::Path qw( make_path remove_tree );
 
 $MBGDAPI = "https://mbgdapi.nibb.ac.jp";
 
 @species = @ARGV;
 
-$outdir = "." if (! $outdir);
+$tmpdir = "tmp_mbgd_genetab" if (! $tmpdir);
 
-#if ($out eq 'genetab') {
-#	&get_genetab(@species);
-#}
-#if ($out eq 'proteinseq') {
-#	&get_proteinseq(@species);
-#}
-make_path($outdir);
+$outname = "genomes";
+
+make_path($tmpdir);
+
 $hash_protseq = &get_proteinseq(@species);
 &output_all(@species);
+foreach $sp (@species) {
+	foreach $suffix ("genetab", "faa") {
+		my($infile) = "$tmpdir/$sp.$suffix";
+		my($outfile) = "$outname.$suffix";
+		open(F, "$infile") || die "Can't open $infile\n";
+		open(O, ">$outfile") || die "Can't open $outfile for output\n";
+		while (<F>) {
+			print O $_;
+		}
+		close(F); close(O);
+		if (! $keep_tmp) {
+			unlink "$tmpdir/$sp.$suffix";
+		}
+	}
+}
+remove_tree($tmpdir) if (! $keep_tmp);
 
 sub output_all {
 	#output genetab and protseq
@@ -27,7 +40,7 @@ sub output_all {
 		my($genome) = &get_data($sp, 'genome');
 		$genome = $genome->[0];
 
-		my($outname) = "$outdir/$sp";
+		my($outname) = "$tmpdir/$sp";
 		open(GENETAB, ">$outname.genetab") || die "Can't open genetab for output\n";
 
 		print GENETAB "##Genome\tsp:$genome->{sp}";
