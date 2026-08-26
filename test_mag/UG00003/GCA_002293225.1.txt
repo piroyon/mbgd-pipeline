@@ -1,0 +1,7 @@
+organism: Genus species GCA_002293225.1 
+contigs: 6
+bases: 3800409
+tRNA: 64
+tmRNA: 1
+rRNA: 1
+CDS: 3790
