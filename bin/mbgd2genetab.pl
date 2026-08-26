@@ -86,7 +86,7 @@ sub output_all {
 			print GENETAB "\tseq_length:$c->{seq_length}" if ($c->{seq_length});
 			print GENETAB "\n";
 			foreach $g (@{ $genes[$c->{seqno} - 1] }) {
-				print GENETAB join("\t", $g->{sp}, $g->{name}, $g->{from1}, $g->{to1}, $g->{aalen}, $g->{pos}, $g->{dir}), "\n"
+				print GENETAB join("\t", $g->{sp}, $g->{name}, $g->{aalen}, $g->{pos}, $g->{dir}), "\n"
 			}
 		}
 		open(PROTSEQ, ">$outname.faa") || die "Can't open protseq for output\n";
