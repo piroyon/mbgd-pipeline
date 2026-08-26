@@ -10,7 +10,7 @@ $MBGDAPI = "https://mbgdapi.nibb.ac.jp";
 
 $tmpdir = "tmp_mbgd_genetab" if (! $tmpdir);
 
-$outname = "genomes";
+$outname = "genomes" if (! $outname);
 
 make_path($tmpdir);
 
