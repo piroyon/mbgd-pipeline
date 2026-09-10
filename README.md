@@ -16,3 +16,9 @@ MBGD pipeline for orhology analysis
 All proteome seqeuces in FAST format (.faa) and annotations in GFF format (.gff) are assumed to be stored in ```in_data``` directory.   
 
       exec_clustering.sh [file_prefix]
+
+### GoogleColab notebook!
+* [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/piroyon/mbgd_pipeline/blob/main/mbgd_pipeline.ipynb)
+
+    *  Google account required.
+    *  This is a demo notebook. You can discard any changes when closing it.
