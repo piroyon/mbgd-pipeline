@@ -1,5 +1,4 @@
 #!/usr/bin/perl -s
-#
 use File::Basename;
 $default_shape = 'linear' if (! $default_shape);
 
